@@ -7,13 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property</title>
     <link rel="stylesheet" href="./css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
+        integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
     <div id="app">
         <div id="form" class="container" v-if="page=='home'">
             <h1>ทะเบียนควบคุมทรัพย์สิน</h1>
-            <form action="#" @submit.prevent="page='print'">
+            <form action="#" @submit.prevent="store()">
                 <div class="col4">
                     <label for="docCode">ที่เอกสาร</label>
                     <input v-model="product.docCode" type="text" id="docCode">
@@ -64,6 +67,9 @@
                         <option value="3">ประกวดราคา</option>
                         <option value="4">วิธีพิเศษ</option>
                         <option value="5">รับบริจาค</option>
+                        <option value="6">วิธีประกาศเชิญชวนทั่วไป</option>
+                        <option value="7">วิธีคัดเลือก</option>
+                        <option value="8">วิธีเฉพาะเจาะจง</option>
                     </select>
                     <label for="date">วันเดือนปีที่ได้มา</label>
                     <input v-model="product.date" type="date">
@@ -76,237 +82,119 @@
                     <input v-model="product.price" type="text" id="price">
                     <label for="amt">จำนวนหน่วย</label>
                     <input v-model="product.amt" type="text" id="name">
-                    <label for="age">อายุการใช้งาน</label>
+                    <label for="age">อายุการใช้งาน </label>
                     <input v-model="product.age" type="text" id="age">
                 </div>
 
-                <input class="btn" type="submit" value="ตรวจสอบ" @submit="page=print">
+                <div class="btn-group">
+                    <a @click=" reset()" class="restart btn">เริ่มใหม่ <i class="fa-solid fa-floppy-disk"></i></a>
+                    <button class="save btn">บันทึก <i class="fa-solid fa-floppy-disk"></i></i></button>
+                </div>
             </form>
         </div>
 
         <div id="print" v-if="page=='print'">
+            <div id="toJpg">
+                <h1>ทะเบียนควบคุมทรัพย์สิน {{type[product.type]}}</h1>
 
-            <h1>ทะเบียนควบคุมทรัพย์สิน {{type[product.type]}}</h1>
+                <div class="container">
+                    <div class="right">
+                        <p>ส่วนราชการ: สำนึกงานสาธารณะสุข อำเภอเมืองตาก</p>
+                        <p>หน่วยงาน: โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านลานสาง</p>
+                    </div>
 
-            <div class="container">
-                <div class="right">
-                    <p>ส่วนราชการ: สำนึกงานสาธารณะสุข อำเภอเมืองตาก</p>
-                    <p>หน่วยงาน: โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านลานสาง</p>
+                    <div class="flex">
+                        <p>ประเภท: {{type[product.type]}}</p>
+                        <p>รหัสครุภัณฑ์: {{product.code}}</p>
+                        <p>ลักษณะ/คุณสมบัติ: {{product.properties}}</p>
+                        <p>รุ่น/แบบ: {{product.version}}</p>
+                        <p>สถานที่ตั้ง/หน่วยงานที่รับผิดชอบ: {{product.location}}</p>
+                        <p>ชื่อผู้ขาย/ผู้รับบริจาค: {{product.seller}}</p>
+                        <p>ที่อยู่: {{product.sellerPlace}}</p>
+                        <p>โทรศัพท์: {{product.sellerPhone}}</p>
+                        <p>ประเภทเงิน: {{budgetType[product.budgetType]}}</p>
+                        <p>วิธีการได้มา: {{how[product.how]}}</p>
+                    </div>
                 </div>
 
-                <div class="flex">
-                    <p>ประเภท: {{type[product.type]}}</p>
-                    <p>รหัสครุภัณฑ์: {{product.code}}</p>
-                    <p>ลักษณะ/คุณสมบัติ: {{product.properties}}</p>
-                    <p>รุ่น/แบบ: {{product.version}}</p>
-                    <p>สถานที่ตั้ง/หน่วยงานที่รับผิดชอบ: {{product.location}}</p>
-                    <p>ชื่อผู้ขาย/ผู้รับบริจาค: {{product.seller}}</p>
-                    <p>ที่อยู่: {{product.sellerPlace}}</p>
-                    <p>โทรศัพท์: {{product.sellerPhone}}</p>
-                    <p>ประเภทเงิน: {{budgetType[product.budgetType]}}</p>
-                    <p>วิธีการได้มา: {{how[product.how]}}</p>
-                </div>
+                <hr>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>วัน/เดือน/ปี</td>
+                            <td>ที่เอกสาร</td>
+                            <td>รายการ</td>
+                            <td>จำนวนหน่วย</td>
+                            <td>ราคาต่อหน่วย/ชุด/กลุ่ม</td>
+                            <td>มูลค่ารวม</td>
+                            <td>อายุการใช้งาน</td>
+                            <td>อัตราค่าเสื่อมราคา</td>
+                            <td>ค่าเสื่อมราคาประจำปี</td>
+                            <td>ค่าเสื่อมราคาสะสมต่อปี</td>
+                            <td>มูลค่าสุทธิคงเหลือ</td>
+                            <td>หมายเหตุใช้ประจำ</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{formatDate(product.date)}}</td>
+                            <td>{{product.docCode}}</td>
+                            <td class="name">{{product.name}}</td>
+                            <td>{{product.amt}}</td>
+                            <td class="right">{{formatN(product.price / product.amt)}}</td>
+                            <td class="right">{{formatN(product.price)}}</td>
+                            <td>{{product.age}}</td>
+                            <td class="right">{{formatN(depre)}}</td>
+                            <td></td>
+                            <td></td>
+                            <td class="right">{{formatN(product.price)}}</td>
+                            <td></td>
+                        </tr>
+
+                        <tr v-for="(data, index) in calc">
+                            <td v-if="index+1 == calc.length">
+                                <span>{{String(formatDate(product.date).split("/")[0])}}/</span>
+                                <span>{{parseInt(formatDate(product.date).split("/")[1])}}/</span>
+                                <span>{{parseInt(formatDate(product.date).split("/")[2])+parseInt(product.age)}}</span>
+                            </td>
+                            <td v-else-if="parseInt(formatDate(product.date).split('/')[1]) >= 9">
+                                30/09/{{parseInt(formatDate(product.date).split("/")[2]) + index + 1}}
+                            </td>
+                            <td v-else>
+                                30/09/{{parseInt(formatDate(product.date).split("/")[2]) + index}}
+                            </td>
+                            <td></td>
+                            <td class="name">
+                                คำนวณค่าเสื่อมราคา เวลา
+                                <span v-if="index > 0">{{index}} ปี </span>
+                                <span v-if="index+1 == calc.length"></span>
+                                <span v-else>{{duration}} เดือน</span>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="right">{{formatN(data.depre)}}</td>
+                            <td class="right">{{formatN(data.leftPrice)}}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <hr>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <td>วัน/เดือน/ปี</td>
-                        <td>ที่เอกสาร</td>
-                        <td>รายการ</td>
-                        <td>จำนวนหน่วย</td>
-                        <td>ราคาต่อหน่วย/ชุด/กลุ่ม</td>
-                        <td>มูลค่ารวม</td>
-                        <td>อายุการใช้งาน</td>
-                        <td>อัตราค่าเสื่อมราคา</td>
-                        <td>ค่าเสื่อมราคาประจำปี</td>
-                        <td>ค่าเสื่อมราคาสะสมต่อปี</td>
-                        <td>มูลค่าสุทธิคงเหลือ</td>
-                        <td>หมายเหตุใช้ประจำ</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{formatDate(product.date)}}</td>
-                        <td>{{product.docCode}}</td>
-                        <td class="name">{{product.name}}</td>
-                        <td>{{product.amt}}</td>
-                        <td class="right">{{formatN(product.price / product.amt)}}</td>
-                        <td class="right">{{formatN(product.price)}}</td>
-                        <td>{{product.age}}</td>
-                        <td class="right">{{formatN(depre)}}</td>
-                        <td></td>
-                        <td></td>
-                        <td class="right">{{formatN(product.price)}}</td>
-                        <td></td>
-                    </tr>
-
-
-                    <tr v-for="(data, index) in calc">
-                        <td v-if="index+1 == calc.length">
-                            <span>{{String(formatDate(product.date).split("/")[0])}}/</span>
-                            <span>{{parseInt(formatDate(product.date).split("/")[1])}}/</span>
-                            <span>{{parseInt(formatDate(product.date).split("/")[2])+parseInt(product.age)}}</span>
-                        </td>
-                        <td v-else-if="parseInt(formatDate(product.date).split('/')[1]) >= 9">
-                            30/09/{{parseInt(formatDate(product.date).split("/")[2]) + index + 1}}
-                        </td>
-                        <td v-else>
-                            30/09/{{parseInt(formatDate(product.date).split("/")[2]) + index}}
-                        </td>
-                        <td></td>
-                        <td class="name">
-                            คำนวณค่าเสื่อมราคา เวลา
-                            <span v-if="index > 0">{{index}} ปี </span>
-                            <span v-if="index+1 == calc.length"></span>
-                            <span v-else>{{duration}} เดือน</span>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="right">{{formatN(data.depre)}}</td>
-                        <td class="right">{{formatN(data.leftPrice)}}</td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="btn-group">
+                <button @click="page='home'" class="edit btn">แก้ไข <i class="fa-solid fa-rotate-left"></i></i></button>
+                <button @click="print()" class="print btn">ปริ้นท์ <i class="fa-solid fa-print"></i></button>
+            </div>
         </div>
     </div>
-
+    </div>
 
     <script src="https://unpkg.com/dayjs@1.11.3/dayjs.min.js"></script>
     <script src="https://unpkg.com/dayjs@1.11.3/plugin/relativeTime.js"></script>
     <script src="https://unpkg.com/vue@3"></script>
-
-    <script>
-        const { createApp, ref, computed } = Vue
-        dayjs.extend(dayjs_plugin_relativeTime)
-
-        createApp({
-            setup() {
-                const product = ref({
-                    docCode: "",
-                    type: "off",
-                    code: "",
-                    properties: "",
-                    version: "",
-                    name: "",
-                    amt: "",
-                    price: "",
-                    age: "",
-                    date: "",
-                })
-
-                const type = ref({
-                    "veh": "ครุภัณฑ์ยานพาหนะและขนส่ง",
-                    "kit": "ครุภัณฑ์งานบ้านงานครัว",
-                    "com": "ครุภัณฑ์คอมพิวเตอร์",
-                    "off": "ครุภัณฑ์สำนักงาน",
-                    "med": "ครุภัณฑ์วิทยาศาสตร์การแพทย์",
-                    "ads": "ครุภัณฑ์โฆษณาและเผยแพร่",
-                    "elc": "ครุภัณฑ์ไฟฟ้าและวิทยุ",
-                    "res": "อาคารเพื่อพักอาศัย",
-                    "bld": "สิ่งปลูกสร้าง",
-                    "ofb": "อาคารสำนักงาน",
-                    "etc": "อาคารเพื่อประโยชน์อื่น"
-                })
-
-                const budgetType = ref({
-                    "1": "เงินงบประมาณ(งบลงทุน)",
-                    "2": "เงินนอกงบประมาณ",
-                    "3": "เงินบริจาค/เงินช่วยเหลือ",
-                    "4": "เงินบำรุง"
-                })
-
-                const how = ref({
-                    "1": "ตกลงราคา",
-                    "2": "สอบราคา",
-                    "3": "ประกวดราคา",
-                    "4": "วิธีพิเศษ",
-                    "5": "รับบริจาค",
-                    "6": "วิธีประกาศเชิญชวนทั่วไป",
-                    "7": "วิธีคัดเลือก",
-                    "8": "วิธีเฉพาะเจาะจง"
-                })
-
-                const page = ref('home')
-
-                const dpMonth = computed(() => {
-                    return depre.value / 12
-                })
-
-                const depre = computed(() => Math.round(((product.value.price / product.value.age) + Number.EPSILON) * 100) / 100)
-
-                const formatN = (n) => {
-                    return (Math.round((parseFloat(n) + Number.EPSILON) * 100) / 100).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                }
-
-                const calc = computed(() => {
-                    const table = []
-                    const firstPrice = product.value.price
-                    let calPrice = product.value.price
-
-                    calPrice -= dpMonth.value * duration.value
-
-                    table.push({
-                        depre: Math.round(((dpMonth.value * duration.value) + Number.EPSILON) * 100) / 100,
-                        leftPrice: Math.round((calPrice + Number.EPSILON) * 100) / 100
-                    })
-
-                    while (calPrice > 1) {
-                        calPrice -= depre.value
-
-                        table.push({
-                            depre: Math.round(((firstPrice - calPrice) + Number.EPSILON) * 100) / 100,
-                            leftPrice: Math.round(((calPrice) + Number.EPSILON) * 100) / 100
-                        })
-
-
-                        if (calPrice < 1) {
-                            table.pop()
-                            table.push({
-                                depre: parseFloat(firstPrice - 1),
-                                leftPrice: parseFloat(1),
-                            })
-                        }
-                    }
-
-                    return table
-                })
-
-                const duration = computed(() => {
-                    let date = dayjs('2022-09-30T16:00:00.000Z').format("M") - dayjs(product.value.date).format("M")
-
-                    if (date < 0) {
-                        date += 12
-                    }
-
-                    return date
-                })
-
-                const formatDate = (date) => {
-                    return dayjs(date).add("543", 'year').format("DD/MM/YYYY")
-                }
-
-                return {
-                    product,
-                    depre,
-                    page,
-                    calc,
-                    duration,
-                    how,
-                    type,
-                    budgetType,
-                    formatN,
-                    formatDate
-                }
-            }
-        }).mount('#app')
-    </script>
+    <script src="./js/main.js"></script>
 </body>
 
 </html>
