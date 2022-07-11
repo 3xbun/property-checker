@@ -1,5 +1,7 @@
 const { createApp, ref, computed, onMounted, onBeforeUnmount, onUpdated } = Vue;
 dayjs.extend(dayjs_plugin_relativeTime);
+dayjs.extend(dayjs_plugin_buddhistEra);
+dayjs.extend(dayjs_plugin_customParseFormat);
 
 createApp({
   setup() {
@@ -13,7 +15,7 @@ createApp({
       amt: "",
       price: "",
       age: "",
-      date: dayjs().format("YYYY-MM-DD"),
+      date: dayjs().format("BBBB-MM-DD"),
     });
 
     const type = ref({
@@ -122,7 +124,13 @@ createApp({
     });
 
     const formatDate = (date) => {
-      return dayjs(date).add("543", "year").format("DD/MM/YYYY");
+      return dayjs(date).format("DD/MM/YYYY");
+    };
+
+    const calendarToday = () => {
+      if (product.value.date === dayjs().format("YYYY-MM-DD")) {
+        product.value.date = dayjs().format("BBBB-MM-DD");
+      }
     };
 
     const print = () => {
@@ -183,6 +191,7 @@ createApp({
       how,
       type,
       budgetType,
+      calendarToday,
       reset,
       store,
       print,
