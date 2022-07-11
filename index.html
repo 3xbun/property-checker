@@ -37,11 +37,13 @@
                     <label for="code">รหัส</label>
                     <input v-model="product.code" type="text" id="code">
                     <label for="properties">ลักษณะ/คุณสมบัติ</label>
-                    <input v-model="product.properties" type="text" id="properties">
+                    <input @change="product.name = product.properties + ' ' + product.version"
+                        v-model="product.properties" type="text" id="properties">
                 </div>
                 <div class="col4">
                     <label for="version">รุ่น/แบบ</label>
-                    <input v-model="product.version" type="text" id="version">
+                    <input @change="product.name = product.properties + ' ' + product.version" v-model="product.version"
+                        type="text" id="version">
                     <label for="location">สถานที่ตั้ง</label>
                     <input v-model="product.location" type="text" id="location">
                     <label for="seller">ชื่อผู้ขาย/ผู้รับบริจาค</label>
@@ -148,8 +150,8 @@
                             <td class="right">{{formatN(product.price / product.amt)}}</td>
                             <td class="right">{{formatN(product.price)}}</td>
                             <td>{{product.age}}</td>
+                            <td>{{formatN(100 / product.age)}}%</td>
                             <td class="right">{{formatN(depre)}}</td>
-                            <td></td>
                             <td></td>
                             <td class="right">{{formatN(product.price)}}</td>
                             <td></td>
