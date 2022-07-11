@@ -136,8 +136,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>{{formatDate(product.date)}}</td>
+                        <tr v-if="product.price > 5000">
+                            <td>{{formatDate(product.date)}} asd</td>
                             <td>{{product.docCode}}</td>
                             <td class="name">{{product.name}}</td>
                             <td>{{product.amt}}</td>
@@ -151,7 +151,7 @@
                             <td></td>
                         </tr>
 
-                        <tr v-for="(data, index) in calc">
+                        <tr v-if="product.price > 5000" v-for="(data, index) in calc">
                             <td v-if="index+1 == calc.length">
                                 <span>{{String(formatDate(product.date).split("/")[0])}}/</span>
                                 <span>{{parseInt(formatDate(product.date).split("/")[1])}}/</span>
@@ -178,6 +178,21 @@
                             <td></td>
                             <td class="right">{{formatN(data.depre)}}</td>
                             <td class="right">{{formatN(data.leftPrice)}}</td>
+                            <td></td>
+                        </tr>
+
+                        <tr v-else>
+                            <td>{{formatDate(product.date)}}</td>
+                            <td>{{product.docCode}}</td>
+                            <td class="name">{{product.name}}</td>
+                            <td>{{product.amt}}</td>
+                            <td class="right">{{formatN(product.price / product.amt)}}</td>
+                            <td class="right">{{formatN(product.price)}}</td>
+                            <td>{{product.age}}</td>
+                            <td class="right"></td>
+                            <td></td>
+                            <td></td>
+                            <td class="right"></td>
                             <td></td>
                         </tr>
                     </tbody>
