@@ -157,7 +157,6 @@ createApp({
 
       if (pd) {
         product.value = pd;
-        console.log(product.value);
         page.value = "print";
       }
     });
