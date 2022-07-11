@@ -151,20 +151,14 @@ canvas {
     color: white;
 }
 
-/* .save:hover {
-    background-color: #3d71b1;
-} */
-
 .print {
     background-color: #44b661;
     border: 1px solid #44b661;
     color: white;
 }
 
-/* .print:hover {
-    background-color: #276938;
+footer {
+    margin-top: 2em;
+    text-align: center;
+    color: grey;
 }
-
-.edit:hover {
-    background-color: #bdbdbd;
-} */
