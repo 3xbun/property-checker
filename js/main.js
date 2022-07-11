@@ -156,7 +156,7 @@ createApp({
         amt: "",
         price: "",
         age: "",
-        date: dayjs().format("YYYY-MM-DD"),
+        date: dayjs().format("BBBB-MM-DD"),
       };
     };
 
