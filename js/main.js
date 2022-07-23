@@ -137,8 +137,8 @@ createApp({
       const printContents = document.querySelector("#toJpg").innerHTML;
 
       document.title = `${type.value[product.value.type]} - ${
-        product.value.code
-      }`;
+        product.value.properties
+      } - ${product.value.code}`;
       document.body.innerHTML = printContents;
       window.print();
       window.location.reload();
