@@ -161,7 +161,7 @@
                         <tr v-if="product.price / product.amt >= 5000" v-for="(data, index) in calc">
                             <td v-if="index+1 == calc.length">
                                 <span>{{String(formatDate(product.date).split("/")[0])}}/</span>
-                                <span>{{parseInt(formatDate(product.date).split("/")[1])}}/</span>
+                                <span>{{formatDate(product.date).split("/")[1]}}/</span>
                                 <span>{{parseInt(formatDate(product.date).split("/")[2])+parseInt(product.age)}}</span>
                             </td>
                             <td v-else-if="parseInt(formatDate(product.date).split('/')[1]) >= 9">
