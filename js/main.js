@@ -2,6 +2,7 @@ const { createApp, ref, computed, onMounted, onBeforeUnmount, onUpdated } = Vue;
 dayjs.extend(dayjs_plugin_relativeTime);
 dayjs.extend(dayjs_plugin_buddhistEra);
 dayjs.extend(dayjs_plugin_customParseFormat);
+dayjs.locale("th");
 
 createApp({
   setup() {
@@ -120,11 +121,15 @@ createApp({
         date += 12;
       }
 
+      if (dayjs(product.value.date).format("D") < 16) {
+        date += 1;
+      }
+
       return date;
     });
 
     const formatDate = (date) => {
-      return dayjs(date).format("DD/MM/YYYY");
+      return dayjs(date).format("DD MMM YYYY");
     };
 
     const calendarToday = () => {
@@ -160,6 +165,13 @@ createApp({
       };
     };
 
+    const formatPS = computed(() => {
+      const date = dayjs(product.value.date)
+        .add(product.value.age, "year")
+        .format("DD MMMM YYYY");
+      return date;
+    });
+
     onMounted(() => {
       const pd = JSON.parse(localStorage.getItem("product"));
 
@@ -191,6 +203,7 @@ createApp({
       how,
       type,
       budgetType,
+      formatPS,
       calendarToday,
       reset,
       store,

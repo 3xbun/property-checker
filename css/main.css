@@ -162,3 +162,8 @@ footer {
     text-align: center;
     color: grey;
 }
+
+.ps {
+    margin-top: 1em;
+    text-align: right;
+}

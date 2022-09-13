@@ -96,7 +96,7 @@
 
             <footer>
                 <!-- Version -->
-                Property Checker 1.3.5
+                Property Checker 1.4.0
             </footer>
         </div>
 
@@ -160,15 +160,15 @@
 
                         <tr v-if="product.price / product.amt >= 5000" v-for="(data, index) in calc">
                             <td v-if="index+1 == calc.length">
-                                <span>{{String(formatDate(product.date).split("/")[0])}}/</span>
-                                <span>{{formatDate(product.date).split("/")[1]}}/</span>
-                                <span>{{parseInt(formatDate(product.date).split("/")[2])+parseInt(product.age)}}</span>
+                                <span>{{String(formatDate(product.date).split(" ")[0])}}&nbsp;</span>
+                                <span>{{formatDate(product.date).split(" ")[1]}}&nbsp;</span>
+                                <span>{{parseInt(formatDate(product.date).split(" ")[2])+parseInt(product.age)}}</span>
                             </td>
-                            <td v-else-if="parseInt(formatDate(product.date).split('/')[1]) >= 9">
-                                30/09/{{parseInt(formatDate(product.date).split("/")[2]) + index + 1}}
+                            <td v-else-if="parseInt(formatDate(product.date).split(' ')[1]) >= 9">
+                                30 ส.ค. {{parseInt(formatDate(product.date).split(" ")[2]) + index + 1}}
                             </td>
                             <td v-else>
-                                30/09/{{parseInt(formatDate(product.date).split("/")[2]) + index}}
+                                30 ส.ค. {{parseInt(formatDate(product.date).split(" ")[2]) + index}}
                             </td>
                             <td></td>
                             <td class="name">
@@ -204,6 +204,14 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="container ps">
+                    <p>
+                        หมายเหตุ หมดอายุการใช้งานอย่างมีประสิทธิภาพ วันที่
+                        {{formatPS}}
+                        แต่ต้องคงมูลค่าสุทธิทางบัญชีทางบัญชีไว้
+                        1 บาท
+                    </p>
+                </div>
             </div>
             <div class="btn-group">
                 <button @click="page='home'" class="edit btn">แก้ไข <i class="fa-solid fa-rotate-left"></i></i></button>
@@ -217,6 +225,7 @@
     <script src="https://unpkg.com/dayjs@1.11.3/plugin/relativeTime.js"></script>
     <script src="https://unpkg.com/dayjs@1.11.3/plugin/buddhistEra.js"></script>
     <script src="https://unpkg.com/dayjs@1.11.3/plugin/customParseFormat.js"></script>
+    <script src="https://unpkg.com/dayjs@1.11.3/locale/th.js"></script>
     <script src="https://unpkg.com/vue@3"></script>
     <script src="./js/main.js"></script>
 </body>
