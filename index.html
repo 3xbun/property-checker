@@ -96,7 +96,7 @@
 
             <footer>
                 <!-- Version -->
-                Property Checker 1.4.3
+                Property Checker 1.4.4
             </footer>
         </div>
 
@@ -204,7 +204,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="container ps" v-if="product.price / product.amt < 5000">
+                <div class="container ps" v-if="product.price / product.amt >= 5000">
                     <p>
                         หมายเหตุ หมดอายุการใช้งานอย่างมีประสิทธิภาพ วันที่
                         {{formatPS}}
