@@ -96,7 +96,7 @@
 
             <footer>
                 <!-- Version -->
-                Property Checker 1.4.4
+                Property Checker 1.4.5
             </footer>
         </div>
 
@@ -160,9 +160,7 @@
 
                         <tr v-if="product.price / product.amt >= 5000" v-for="(data, index) in calc">
                             <td v-if="index+1 == calc.length">
-                                <span>{{String(formatDate(product.date).split(" ")[0])}}&nbsp;</span>
-                                <span>{{formatDate(product.date).split(" ")[1]}}&nbsp;</span>
-                                <span>{{parseInt(formatDate(product.date).split(" ")[2])+parseInt(product.age)}}</span>
+                                30 ก.ย. {{parseInt(formatDate(product.date).split(" ")[2])+parseInt(product.age)}}
                             </td>
                             <td v-else-if="parseInt(formatDate(product.date).split(' ')[1]) >= 9">
                                 30 ก.ย. {{parseInt(formatDate(product.date).split(" ")[2]) + index + 1}}
