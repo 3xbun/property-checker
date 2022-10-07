@@ -9,6 +9,7 @@
 
 body {
     background: #e7e9eb;
+    font-family: 'Sarabun', sans-serif;
 }
 
 .container {
@@ -18,9 +19,6 @@ body {
     background-color: white;
 }
 
-body {
-    font-family: 'Sarabun', sans-serif;
-}
 
 #form.container {
     padding: 1em 3em;
